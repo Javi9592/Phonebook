@@ -23,9 +23,5 @@
         "react": {
           "version": "detect"
         }
-      },
-    "eslintConfig": {
-      "extends": "../../node_modules/eslint-config-react-app"
-    }
-      
+      }
 }
