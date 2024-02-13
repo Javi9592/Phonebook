@@ -6,7 +6,7 @@ const url = process.env.MONGODB_URI
 console.log('connecting to', url)
 
 connect(url)
-  // eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
   .then((_result) => {
     console.log('connected to MongoDB')
   })
