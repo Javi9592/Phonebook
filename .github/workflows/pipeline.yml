@@ -9,21 +9,23 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  lint:
+  lintTest:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Directory content
-        run: ls -l
       - name: Install dependencies
         run: npm install
       - name: Check style
         run: npm run lint
+      - name: test
+        run: cd frontend && npm run test
+      
 
   build:
+    needs: [lintTest]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -38,4 +40,5 @@ jobs:
         with:
           name: build
           path: build
+  
         
