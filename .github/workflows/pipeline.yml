@@ -81,7 +81,7 @@ jobs:
         run: echo "skip_commit=$(if echo "$COMMIT_MESSAGES" | grep -q '#skip'; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.message) }}
-      - name: Trigger deployment
+      - name: Trigger deploy
         if: ${{ github.event_name == 'push' && steps.check_skip_commit.outputs.skip_commit != 'true' }}
         run: curl ${{ secrets.RENDER_DEPLOY }}          
       - name: Bump version and push tag
