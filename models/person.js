@@ -1,24 +1,25 @@
-const mongoose = require('mongoose')
-mongoose.set('strictQuery', false)
+import { set, connect, Schema, model } from 'mongoose'
+set('strictQuery', false)
 
+// eslint-disable-next-line no-undef
 const url = process.env.MONGODB_URI
 console.log('connecting to', url)
 
-mongoose.connect(url)
-  // eslint-disable-next-line no-unused-vars
-  .then(_result => {
+connect(url)
+// eslint-disable-next-line no-unused-vars
+  .then((_result) => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
     console.log('error connecting to MongoDB:', error.message)
   })
 
-const personSchema = new mongoose.Schema({
+const personSchema = new Schema({
   name: {
     type: String,
     minlength: 3,
     required: true,
-    unique: true
+    unique: true,
   },
   number: {
     type: String,
@@ -28,7 +29,7 @@ const personSchema = new mongoose.Schema({
       validator: (v) => {
         return /^(\d{2}|\d{3})-\d*$/.test(v)
       },
-      message: props => `${props.value} is not a valid phone number!`
+      message: (props) => `${props.value} is not a valid phone number!`,
     },
   },
 })
@@ -38,7 +39,7 @@ personSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
-  }
+  },
 })
 
-module.exports = mongoose.model('Person', personSchema)
+export default model('Person', personSchema)
