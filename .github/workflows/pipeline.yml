@@ -21,7 +21,7 @@ jobs:
         env:
           COMMITS: ${{ toJson(github.event.commits) }}
         run: echo "$COMMITS"
-        
+
   lint:
     runs-on: ubuntu-20.04
     steps:
@@ -82,7 +82,7 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.message) }}
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' && steps.check_skip_commit.outputs.skip_commit != 'true' }}
-        run: ${{ secrets.RENDER_DEPLOY }}          
+        run: curl ${{ secrets.RENDER_DEPLOY }}          
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.check_skip_commit.outputs.skip_commit != 'true'
