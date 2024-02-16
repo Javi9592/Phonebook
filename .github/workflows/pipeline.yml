@@ -33,7 +33,7 @@ jobs:
       - name: Install frontend
         run: cd frontend && npm install
       - name: Check Style frontend
-        run: npm run lint
+        run: cd frontend && npm run lint
 
   test:
     runs-on: ubuntu-20.04
@@ -47,6 +47,6 @@ jobs:
       - name: Install frontend
         run: cd frontend && npm install
       - name: test frontend
-        run: npm run test
+        run: cd front end && npm run test
 
   
