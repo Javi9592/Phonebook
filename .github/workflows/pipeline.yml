@@ -47,6 +47,6 @@ jobs:
       - name: Install frontend
         run: cd frontend && npm install
       - name: test frontend
-        run: cd front end && npm run test
+        run: cd frontend && npm run test
 
   
