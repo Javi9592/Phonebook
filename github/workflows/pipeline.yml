@@ -1,0 +1,37 @@
+name: PhonebookPipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  lintBack:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run lint
+
+  lintFront:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: cd frontend && npm install
+      - name: Check Style frontend
+        run: npm run lint
+
+  
