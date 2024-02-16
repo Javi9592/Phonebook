@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - renewing
-      - main
   pull_request:
     branches: [main]
     types: [opened, synchronize]
