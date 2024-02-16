@@ -3,7 +3,7 @@ name: PhonebookPipeline
 on:
   push:
     branches:
-      - develop
+      - renewing
       - main
   pull_request:
     branches: [main]
