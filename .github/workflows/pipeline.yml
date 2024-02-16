@@ -1,4 +1,4 @@
-name: PhonebookAction
+name: PhonebookActionGitHub
 
 on:
   push:
@@ -29,6 +29,8 @@ jobs:
         with:
           node-version: 18
       - name: Install dependencies
+        run: npm install
+      - name: Install frontend
         run: cd frontend && npm install
       - name: Check Style frontend
         run: npm run lint
