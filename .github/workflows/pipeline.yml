@@ -9,6 +9,20 @@ on:
     types: [opened, synchronize]
 
 jobs:
+
+  a_test_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: commits
+        env:
+          COMMITS: ${{ toJson(github.event.commits) }}
+        run: echo "$COMMITS"
+
   lintBack:
     runs-on: ubuntu-20.04
     steps:
@@ -65,3 +79,28 @@ jobs:
         with:
           name: build
           path: build
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Check commit messages for #skip
+        id: check_skip_commit
+        run: echo "skip_commit=$(if echo "$COMMIT_MESSAGES" | grep -q '#skip'; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.message) }}
+      - name: Trigger deploy
+        if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.check_skip_commit.outputs.skip_commit != 'true' }}
+        run: curl ${{ secrets.RENDER_DEPLOY }}          
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.67.0
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.check_skip_commit.outputs.skip_commit != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
