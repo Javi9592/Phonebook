@@ -8,6 +8,7 @@ const Person = require('./models/person')
 app.use(cors())
 
 
+// eslint-disable-next-line no-unused-vars
 morgan.token('body', function(req, res) {
   return JSON.stringify(req.body);
 })
@@ -45,7 +46,7 @@ app.get('/', (request, response) => {
 const today = Date()
 
 app.get('/info', (request, response) => {
-    response.send(`<h2>Phonebook has info for ${persons.length} people <br> ${today} </h2>`)
+    response.send(`<h2>Phonebook has info for ${Person.length} people <br> ${today} </h2>`)
   })
 
 app.get('/api/persons', (request, response) => {
@@ -68,6 +69,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
   app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
+    // eslint-disable-next-line no-unused-vars
     .then(result => {
       response.status(204).end()
     })
